@@ -11,6 +11,7 @@
 	Enable = {
 		Write-Warning "PowerShell is non-portable."
 
+		Export-Shortcut "PowerShell" "./app/pwsh.exe"
 		Export-Command "pwsh" "./app/pwsh.exe"
 	}
 }
