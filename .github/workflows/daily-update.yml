@@ -1,0 +1,66 @@
+name: Daily Update-PogRepository
+
+on:
+  # allow manual trigger
+  workflow_dispatch:
+  # run every day at 17:42 (more-or-less randomly picked)
+  schedule:
+    - cron: '42 17 * * *'
+
+jobs:
+  update:
+    runs-on: windows-latest
+    steps:
+      - name: Configure git to preserve line endings
+        run: git config --global core.autocrlf false
+
+      - uses: actions/checkout@v4
+        with:
+          # we clone and push using an SSH deploy key, because GitHub does not trigger push workflows
+          #  when pushing using the implicit GITHUB_TOKEN (incredibly retarded if you ask me...)
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Install Pog
+        run: pwsh -noprofile .github\install-pog.ps1 D:\Pog
+
+      - name: Run Update-PogRepository
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          Set-PogRepository .
+
+          $GitHubToken = ConvertTo-SecureString -AsPlainText -Force "${{ secrets.GITHUB_TOKEN }}"
+          Update-PogRepository -GitHubToken $GitHubToken -OutVariable NewPackages -ErrorAction Stop
+
+          # render a summary for the workflow
+          $(if ($NewPackages) {
+            $Count = @($NewPackages).Count
+            "# $Count new package$(if ($Count -gt 1) {"s"})"
+            ""
+            '```'
+            $NewPackages | Out-String | % Trim
+            '```'
+          } else {
+            "# No new packages"
+          }) > $env:GITHUB_STEP_SUMMARY
+
+      - name: Commit & Push
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $PSNativeCommandUseErrorActionPreference = $true
+
+          git add --all
+          if (git diff --staged) {
+            # https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+            $ChangedFiles = git diff --cached --name-only
+            git commit -m "daily-update.yml: Add automatically generated manifests (CI)`n`n$($ChangedFiles -join "`n")"
+            git push
+            Write-Host "Changes pushed."
+          } else {
+            Write-Host "No changes."
+          }

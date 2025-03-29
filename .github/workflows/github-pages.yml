@@ -1,0 +1,34 @@
+name: Pog remote repository build
+
+on:
+  push:
+    # this is also triggered when a PR is merged into main
+    branches: ["main"]
+
+# Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+permissions:
+  pages: write      # to deploy to Pages
+  id-token: write   # to verify the deployment originates from an appropriate source
+
+jobs:
+  github-pages:
+    runs-on: windows-latest
+    steps:
+      - name: Configure git to preserve line endings
+        run: git config --global core.autocrlf false
+
+      - uses: actions/checkout@v4
+
+      - name: "Install Pog"
+        uses: MatejKafka/Pog/.github/actions/install-pog@main
+
+      # TODO: when 0.13.0 is released, re-enable validation
+      #  (disabled because 0.12.0 doesn't like README.md in repo root)
+      - name: "Build remote repository"
+        uses: MatejKafka/Pog/.github/actions/build-pog-repository@main
+        with: {source: ".", output: "D:/remote-repo", validate: false}
+
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: "D:/remote-repo"}
+
+      - uses: actions/deploy-pages@v4
