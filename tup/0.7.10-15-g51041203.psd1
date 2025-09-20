@@ -1,0 +1,5 @@
+@{
+    Version = '0.7.10-15-g51041203'
+    Url = 'https://gittup.org/tup/win32/tup-v0.7.10-15-g51041203.zip'
+    Hash = '3E4F14327EE89E76D3D888979C3EE44D016180D1C98CAAE906B0A4D5742CF947'
+}
