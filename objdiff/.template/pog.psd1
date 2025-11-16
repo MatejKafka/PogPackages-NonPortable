@@ -11,9 +11,11 @@
         Target = "objdiff.exe"
     }
 
-    Enable = {
-        Write-Warning "objdiff is non-portable."
+    NonPortablePaths = @(
+        # TODO: not sure, the GUI uses `dirs`, so most likely AppData?
+    )
 
+    Enable = {
         Export-Command "objdiff" "./app/objdiff.exe" -Symlink
     }
 }

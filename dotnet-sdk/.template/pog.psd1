@@ -9,10 +9,13 @@
 		Hash = "{{TEMPLATE:Hash}}"
 	}
 
-	Enable = {
-		# nuget stores packages in home dir
-		Write-Warning ".NET SDK is non-portable."
+	NonPortablePaths = @(
+		"~/.nuget"
+		"~/AppData/Roaming/Nuget"
+		"~/AppData/Local/Nuget"
+	)
 
+	Enable = {
 		Export-Command "dotnet" "./app/dotnet.exe"
 	}
 }

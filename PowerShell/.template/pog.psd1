@@ -8,9 +8,12 @@
 		Hash = "{{TEMPLATE:Hash}}"
 	}
 
-	Enable = {
-		Write-Warning "PowerShell is non-portable."
+	NonPortablePaths = @(
+		"~/Documents/PowerShell"
+		"~/AppData/Local/Microsoft/PowerShell"
+	)
 
+	Enable = {
 		Export-Shortcut "PowerShell" "./app/pwsh.exe"
 		Export-Command "pwsh" "./app/pwsh.exe"
 	}

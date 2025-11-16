@@ -10,9 +10,11 @@
 		Target = "LiteDB.Studio.exe"
 	}
 
-	Enable = {
-		Write-Warning "LiteDB.Studio is non-portable."
+	NonPortablePaths = @(
+		"~/AppData/Local/LiteDB"
+	)
 
+	Enable = {
 		Disable-DisplayScaling "./app/LiteDB.Studio.exe"
 		Export-Shortcut "LiteDB Studio" "./app/LiteDB.Studio.exe"
 	}

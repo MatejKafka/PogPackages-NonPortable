@@ -8,9 +8,11 @@
 		Hash = "B5CEB790912681524B47F2F5603D8162EF696EF23B02DB0E2BD2D25B9567078A"
 	}
 
-	Enable = {
-		Write-Warning "Altap Salamander is non-portable."
+	NonPortablePaths = @(
+		"HKCU:/SOFTWARE/Altap"
+	)
 
+	Enable = {
 		Export-Shortcut "Altap Salamander" "./app/salamand.exe"
 		Export-Command "salamand" "./app/salamand.exe"
 	}

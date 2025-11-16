@@ -8,10 +8,11 @@
 		Hash = "42D4CA081AA9C90CA96F8CF76A493BDE2AFE6D197DF671760713D3C4191D0C6D"
 	}
 
-	Enable = {
-		# writes to AppData\CrystalDiskMark
-		Write-Warning "CrystalDiskMark is non-portable."
+	NonPortablePaths = @(
+		"~/AppData/Roaming/CrystalDiskMark"
+	)
 
+	Enable = {
 		$BinName = switch ([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) {
 			"X64" {"DiskMark64.exe"}
 			"X86" {"DiskMark32.exe"}

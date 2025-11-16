@@ -9,10 +9,12 @@
         UserAgent = "Wget"
     }
 
-    Enable = {
-        # writes to HKCU\Software\HWiNFO*
-        Write-Warning "HWiNFO is non-portable."
+    NonPortablePaths = @(
+        "HKCU:/SOFTWARE/HWiNFO32"
+        "HKCU:/SOFTWARE/HWiNFO64"
+    )
 
+    Enable = {
         $BinName = switch ([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) {
             "X86" {"HWiNFO32.exe"}
             "X64" {"HWiNFO64.exe"}
