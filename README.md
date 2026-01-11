@@ -4,7 +4,7 @@ This is a non-default package repository for the [Pog package manager](https://g
 
 To use this repository, call the following command, which changes the configured repository **in the current PowerShell session**:
 ```powershell
-Set-PogRepository "https://matejkafka.github.io/PogPackages-NonPortable/"
+Set-PogRepository "https://nonportable.pog.matejkafka.com/"
 
 # install a package from the repository
 pog ...
