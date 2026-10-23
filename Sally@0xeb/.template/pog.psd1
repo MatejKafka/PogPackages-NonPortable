@@ -18,6 +18,12 @@
     )
 
     Enable = {
+        $ConfigRegKey = "HKCU:\SOFTWARE\Sally\1.0\Configuration"
+        if (-not (Test-Path $ConfigRegKey)) {
+            $null = New-Item $ConfigRegKey -Force
+        }
+        Set-ItemProperty $ConfigRegKey "Update Check Mode" 0
+
         Export-Command "sally" "./app/sally.exe"
         Export-Shortcut "Sally" "./app/sally.exe"
     }
