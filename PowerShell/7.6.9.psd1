@@ -1,0 +1,5 @@
+@{
+    Version = '7.6.9'
+    Url = 'https://github.com/PowerShell/PowerShell/releases/download/v7.6.9/PowerShell-7.6.9-win-x64.zip'
+    Hash = 'CE7484804C0F0AD4DDA10C958E71ACDAF7EEBFB22505C1B480F89E0E9F1DA94D'
+}
